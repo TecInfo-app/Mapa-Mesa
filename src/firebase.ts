@@ -1,11 +1,25 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import firebaseConfig from './firebase-applet-config.json';
+import rawConfig from './firebase-applet-config.json';
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
-export const auth = getAuth(app);
+// Handle potential ESM import inconsistency where JSON is wrapped in a default export
+const firebaseConfig = (rawConfig as any).default || rawConfig;
+
+let app;
+let db: ReturnType<typeof getFirestore>;
+let auth: ReturnType<typeof getAuth>;
+
+try {
+  app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  auth = getAuth(app);
+} catch (error) {
+  console.error("Firebase initialization failed:", error);
+  throw error;
+}
+
+export { db, auth };
 
 export enum OperationType {
   CREATE = 'create',
