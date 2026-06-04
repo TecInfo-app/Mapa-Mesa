@@ -54,17 +54,5 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
   return errInfo.error;
 }
 
-// Mandatory test helper to validate active Firestore connection upon initial hydration
-import { doc, getDocFromServer } from 'firebase/firestore';
 
-async function testConnection() {
-  try {
-    await getDocFromServer(doc(db, 'test', 'connection'));
-  } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error("Please check your Firebase configuration: Client appears to be offline.");
-    }
-  }
-}
-testConnection();
 
