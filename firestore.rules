@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Config collection
+    match /config/{configId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Tables collection
+    match /tables/{tableId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Decorations collection
+    match /decorations/{decorationId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Reservations collection
+    match /reservations/{reservationId} {
+      allow read: if true;
+      allow write: if true;
+    }
+  }
+}

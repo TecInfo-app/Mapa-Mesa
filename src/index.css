@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-background: #f9f9f9;
+  --color-surface: #f9f9f9;
+  --color-surface-container: #eeeeee;
+  --color-surface-container-low: #f3f3f3;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-variant: #e2e2e2;
+  --color-primary: #705d00;
+  --color-primary-container: #ffd700;
+  --color-on-primary-container: #705e00;
+  --color-secondary: #934b19;
+  --color-secondary-container: #ffa26a;
+  --color-on-secondary: #ffffff;
+  --color-on-surface: #1a1c1c;
+  --color-on-surface-variant: #4d4732;
+  --color-outline: #7e775f;
+  --color-outline-variant: #d0c6ab;
+
+  --font-sans: "Inter", sans-serif;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+}
+
+.wood-texture {
+  background-image: url("https://www.transparenttextures.com/patterns/wood-pattern.png");
+}
+
+.gold-glow {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}

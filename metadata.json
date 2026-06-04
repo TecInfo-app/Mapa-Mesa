@@ -1,0 +1,8 @@
+{
+  "name": "NOVA COPIA São João Cia do Chopp 2025",
+  "description": "App para reservas de mesas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

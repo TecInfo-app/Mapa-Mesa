@@ -1,0 +1,97 @@
+{
+  "entities": {
+    "Table": {
+      "title": "Table",
+      "description": "A table setup inside the venue",
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "area": { "type": "string" },
+        "capacity": { "type": "integer" },
+        "type": { "type": "string" },
+        "isVip": { "type": "boolean" },
+        "bookingFee": { "type": "number" },
+        "status": { "type": "string", "enum": ["available", "reserved"] },
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "shape": { "type": "string", "enum": ["circle", "square", "rectangle"] }
+      },
+      "required": ["id", "name", "area", "capacity", "type", "isVip", "bookingFee", "status", "x", "y", "shape"]
+    },
+    "MapDecoration": {
+      "title": "MapDecoration",
+      "description": "Visual decoration, title, or landmark on the floor plan",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "type": "string" },
+        "sublabel": { "type": "string" },
+        "type": { "type": "string", "enum": ["stage", "bar", "zone", "kitchen", "adega", "pizzaria", "salon", "custom"] },
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "width": { "type": "number" },
+        "height": { "type": "number" }
+      },
+      "required": ["id", "label", "type", "x", "y", "width", "height"]
+    },
+    "Reservation": {
+      "title": "Reservation",
+      "description": "A booking reservation for a specific table",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "tableId": { "type": "integer" },
+        "tableName": { "type": "string" },
+        "area": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "guests": { "type": "integer" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "total": { "type": "number" },
+        "status": { "type": "string", "enum": ["confirmed", "cancelled"] },
+        "createdAt": { "type": "string" },
+        "paymentStatus": { "type": "string", "enum": ["paid", "pending"] },
+        "paymentMethod": { "type": "string", "enum": ["dinheiro", "cartao", "pix", "none"] },
+        "agentName": { "type": "string" },
+        "agentCommission": { "type": "number" },
+        "bookingFeeCharged": { "type": "number" }
+      },
+      "required": ["id", "tableId", "tableName", "area", "date", "time", "guests", "name", "phone", "total", "status", "createdAt"]
+    },
+    "Config": {
+      "title": "Config",
+      "description": "General settings and customized texts for the event map",
+      "type": "object",
+      "properties": {
+        "storeName": { "type": "string" },
+        "eventName": { "type": "string" },
+        "storeWhatsapp": { "type": "string" },
+        "agentsList": {
+          "type": "array",
+          "description": "Commissioned booking salespeople"
+        }
+      },
+      "required": ["storeName", "eventName", "storeWhatsapp", "agentsList"]
+    }
+  },
+  "firestore": {
+    "tables/{tableId}": {
+      "schema": { "$ref": "#/entities/Table" },
+      "description": "List of tables managed in the application floor map"
+    },
+    "decorations/{decorationId}": {
+      "schema": { "$ref": "#/entities/MapDecoration" },
+      "description": "Background areas, stages, adegas, and decor widgets"
+    },
+    "reservations/{reservationId}": {
+      "schema": { "$ref": "#/entities/Reservation" },
+      "description": "Actual reservations requested by customers or admin operators"
+    },
+    "config/general": {
+      "schema": { "$ref": "#/entities/Config" },
+      "description": "General branding parameters, WhatsApp configuration and pricing/commission staff"
+    }
+  }
+}
