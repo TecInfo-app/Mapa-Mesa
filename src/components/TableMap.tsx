@@ -34,6 +34,8 @@ interface TableMapProps {
   storeWhatsapp?: string;
   storeName?: string;
   eventName?: string;
+  isEditorAuthenticated?: boolean;
+  onAdminLogin?: () => boolean;
 }
 
 export function TableMap({ 
@@ -46,7 +48,9 @@ export function TableMap({
   onUpdateDecorations,
   storeWhatsapp = '',
   storeName = 'Cia do Chopp',
-  eventName = 'São João 2025'
+  eventName = 'São João 2025',
+  isEditorAuthenticated = false,
+  onAdminLogin
 }: TableMapProps) {
   const isSharedMap = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('share') === 'map';
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -428,6 +432,10 @@ export function TableMap({
           {!isSharedMap && (
             <button
               onClick={() => {
+                if (!isAdminMode && !isEditorAuthenticated) {
+                  const success = onAdminLogin ? onAdminLogin() : false;
+                  if (!success) return;
+                }
                 setIsAdminMode(!isAdminMode);
                 setErrorText('');
               }}

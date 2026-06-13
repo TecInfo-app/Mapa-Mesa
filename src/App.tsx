@@ -97,7 +97,19 @@ export default function App() {
   });
   const [editingReservation, setEditingReservation] = useState<Reservation | null>(null);
 
-  // Sync states in useEffect cleanly to make local fallback resilient
+  // Auth state for layout editor
+  const [isEditorAuthenticated, setIsEditorAuthenticated] = useState(false);
+
+  const handleAdminAuth = () => {
+    const password = prompt("Digite a senha do Editor:");
+    if (password === '1234') {
+      setIsEditorAuthenticated(true);
+      return true;
+    } else {
+      alert("Senha incorreta!");
+      return false;
+    }
+  };
   useEffect(() => {
     try {
       localStorage.setItem('sao_joao_tables_v2', JSON.stringify(tables));
@@ -602,6 +614,8 @@ export default function App() {
                 storeWhatsapp={storeWhatsapp}
                 storeName={storeName}
                 eventName={eventName}
+                isEditorAuthenticated={isEditorAuthenticated}
+                onAdminLogin={handleAdminAuth}
               />
             </>
           ) : (
@@ -619,6 +633,8 @@ export default function App() {
                     storeWhatsapp={storeWhatsapp}
                     storeName={storeName}
                     eventName={eventName}
+                    isEditorAuthenticated={isEditorAuthenticated}
+                    onAdminLogin={handleAdminAuth}
                   />
                   <SummaryCard selectedTable={selectedTable} guestsCount={guests} />
                 </>
