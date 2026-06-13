@@ -33,6 +33,8 @@ export function ReservationsView({
   eventName 
 }: ReservationsViewProps) {
   const activeReservations = reservations.filter(r => r.status === 'confirmed');
+  
+  const sortedReservations = [...activeReservations].sort((a, b) => a.tableId - b.tableId);
 
   // Calculates financial balances safely
   const sumOfBookingFees = activeReservations.reduce((acc, r) => {
@@ -117,7 +119,7 @@ export function ReservationsView({
         )}
 
         {/* ACTIVE RESERVATIONS CHECKLISTS */}
-        {activeReservations.length === 0 ? (
+        {sortedReservations.length === 0 ? (
           <div className="p-8 md:p-12 bg-surface-container-lowest rounded-2xl border border-outline-variant text-center space-y-4 max-w-xl mx-auto">
             <div className="w-16 h-16 bg-secondary-container/20 text-secondary rounded-full flex items-center justify-center mx-auto">
               <Ticket className="w-8 h-8" />
@@ -135,11 +137,17 @@ export function ReservationsView({
           </div>
         ) : (
           <div className="space-y-4">
-            {activeReservations.map(reservation => {
+            {sortedReservations.map(reservation => {
               const displayFee = (reservation.total ?? 0) === 0 ? 'Grátis' : (reservation.total ?? 0).toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL'
               });
+
+              const shareOnWhatsApp = () => {
+                const message = `Olá ${reservation.name}, sua reserva no ${storeName} para o ${eventName} foi confirmada! Mesa: ${reservation.tableName}. Data: ${reservation.date} às ${reservation.time}. Convidados: ${reservation.guests}. Valor: ${displayFee}.`;
+                const url = `https://wa.me/${reservation.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+              };
 
               return (
                 <div 
@@ -248,6 +256,14 @@ export function ReservationsView({
                         ID: {reservation.id}
                       </p>
                     </div>
+
+                    <button
+                      onClick={shareOnWhatsApp}
+                      className="flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-green-700 bg-green-100/50 hover:bg-green-100 rounded-lg transition-colors cursor-pointer"
+                      title="Compartilhar no WhatsApp"
+                    >
+                      <span>💬 WhatsApp</span>
+                    </button>
 
                     <button
                       onClick={() => onEditReservation(reservation.id)}
